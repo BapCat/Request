@@ -30,6 +30,11 @@ class Request {
   /**
    * @var ReadOnlyCollection
    */
+  private $cookie;
+  
+  /**
+   * @var ReadOnlyCollection
+   */
   private $query;
   
   /**
@@ -47,14 +52,15 @@ class Request {
     $host    = $_SERVER['HTTP_HOST'];
     $headers = getallheaders();
     
-    return new static($method, $url, $host, $headers, $_GET, $_POST);
+    return new static($method, $url, $host, $headers, $_COOKIE, $_GET, $_POST);
   }
   
-  public function __construct(HttpMethod $method, $uri, $host, array $headers, array $query = [], array $input = []) {
+  public function __construct(HttpMethod $method, $uri, $host, array $headers, array $cookie = [], array $query = [], array $input = []) {
     $this->method  = $method;
     $this->uri     = $uri;
     $this->host    = $host;
     $this->headers = new ReadOnlyCollection($headers);
+    $this->cookie  = new ReadOnlyCollection($cookie);
     $this->query   = new ReadOnlyCollection($query);
     $this->input   = new ReadOnlyCollection($input);
   }
@@ -77,6 +83,10 @@ class Request {
   
   protected function getHeaders() {
     return $this->headers;
+  }
+  
+  protected function getCookie() {
+    return $this->cookie;
   }
   
   protected function getQuery() {
