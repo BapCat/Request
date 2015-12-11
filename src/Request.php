@@ -52,7 +52,7 @@ class Request {
     $host    = $_SERVER['HTTP_HOST'];
     $headers = getallheaders();
     
-    return new static($method, $url, $host, $headers, $_COOKIE, $_GET, $_POST);
+    return new static($method, $uri, $host, $headers, $_COOKIE, $_GET, $_POST);
   }
   
   public function __construct(HttpMethod $method, $uri, $host, array $headers, array $cookie = [], array $query = [], array $input = []) {
