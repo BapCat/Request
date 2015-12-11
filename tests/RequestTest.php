@@ -37,7 +37,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
   public function testIsJson() {
     $this->assertFalse($this->request->is_json);
     
-    $request = new Request(HttpMethod::POST(), '/test', 'example.com', ['Accept' => 'application/ajax']);
+    $request = new Request(HttpMethod::POST(), '/test', 'example.com', ['Accept' => 'application/json']);
     
     $this->assertTrue($request->is_json);
   }

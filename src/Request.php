@@ -59,7 +59,7 @@ class Request {
     $this->method  = $method;
     $this->uri     = $uri;
     $this->host    = $host;
-    $this->headers = new ReadOnlyCollection($headers);
+    $this->headers = new ReadOnlyCollection(array_change_key_case($headers, CASE_LOWER));
     $this->cookie  = new ReadOnlyCollection($cookie);
     $this->query   = new ReadOnlyCollection($query);
     $this->input   = new ReadOnlyCollection($input);
@@ -78,7 +78,7 @@ class Request {
   }
   
   protected function getIsJson() {
-    return $this->headers->get('Accept', null) === 'application/ajax';
+    return $this->headers->get('accept', null) === 'application/json';
   }
   
   protected function getHeaders() {
