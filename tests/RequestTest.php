@@ -2,6 +2,7 @@
 
 use BapCat\Request\InvalidStateException;
 use BapCat\Request\Request;
+use BapCat\Request\RequestFromGlobals;
 use BapCat\Values\HttpMethod;
 
 class RequestTest extends PHPUnit_Framework_TestCase {
@@ -14,7 +15,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     $this->query   = [10];
     $this->input   = [1];
     
-    $this->request = new Request($this->method, $this->uri, $this->host, $this->headers, $this->cookie, $this->query, $this->input);
+    $this->request = new ExampleRequest($this->method, $this->uri, $this->host, $this->headers, $this->cookie, $this->query, $this->input);
   }
   
   public function testAccessors() {
@@ -31,14 +32,20 @@ class RequestTest extends PHPUnit_Framework_TestCase {
   public function testFromGlobalsFailsInCli() {
     $this->setExpectedException(InvalidStateException::class);
     
-    $request = Request::fromGlobals();
+    $request = new RequestFromGlobals();
   }
   
   public function testIsJson() {
     $this->assertFalse($this->request->is_json);
     
-    $request = new Request(HttpMethod::POST(), '/test', 'example.com', ['Accept' => 'application/json']);
+    $request = new ExampleRequest(HttpMethod::POST(), '/test', 'example.com', ['Accept' => 'application/json']);
     
     $this->assertTrue($request->is_json);
+  }
+}
+
+class ExampleRequest extends Request {
+  public function __construct(HttpMethod $method, $uri, $host, array $headers = [], array $cookie = [], array $query = [], array $input = []) {
+    $this->create($method, $uri, $host, $headers, $cookie, $query, $input);
   }
 }
